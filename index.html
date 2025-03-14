@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArabiaStore | Nitro Trimensal GEN</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+    <div class="display">
+    
+        <img src="./assets/img/logo.png" alt="logo">
+
+        <div class="container fade-in">
+            <h1>Gerador de Nitro Trimensal</h1>
+            <p>Quantos códigos Nitro trimestral você gostaria de gerar?</p>
+            <div class="input-box fade-in">
+                <input type="number" id="quantity" placeholder="Quantidade de codigos">
+            </div>
+            <div class="output-box fade-in">
+                <textarea id="codes" placeholder="Códigos gerados..." readonly></textarea>
+            </div>
+            <button onclick="generateCodes()">Gerar códigos</button>
+            <button onclick="copyToClipboard()">Copiar</button>
+            <button onclick="downloadTxtFile()">Baixar arquivo .txt</button>
+        </div>
+
+    </div>
+
+    <script>
+        async function generateCodes() {
+            const quantity = document.getElementById('quantity').value;
+            const output = document.getElementById('codes');
+            const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const tamanho = 24;
+            let codigos = [];
+
+            for (let i = 0; i < quantity; i++) {
+                let codigo = '';
+                for (let j = 0; j < tamanho; j++) {
+                    const indice = Math.floor(Math.random() * caracteres.length);
+                    codigo += caracteres.charAt(indice);
+                }
+                codigos.push(`https://discord.com/billing/promotions/${codigo}`);
+            }
+
+            output.value = codigos.join('\n');
+        }
+
+        function copyToClipboard() {
+            const copyText = document.getElementById('codes');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert("Códigos copiados para a área de transferência!");
+            }).catch(err => {
+                alert("Erro ao copiar os códigos: ", err);
+            });
+        }
+
+        function downloadTxtFile() {
+            const textToSave = document.getElementById("codes").value;
+            const hiddenElement = document.createElement("a");
+            hiddenElement.href = "data:text/plain;charset=utf-8," + encodeURIComponent(textToSave);
+            hiddenElement.target = "_blank";
+            hiddenElement.download = "codigos_arabiastore.txt";
+            hiddenElement.click();
+        }
+    </script>
+</body>
+</html>
